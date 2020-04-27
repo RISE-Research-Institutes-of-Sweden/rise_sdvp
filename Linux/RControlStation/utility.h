@@ -19,7 +19,11 @@
 #define BUFFER_H_
 
 #include <stdint.h>
+
+#ifndef WITHOUT_PACKETINTERFACE
 #include "packetinterface.h"
+#endif
+
 #include "mapwidget.h"
 
 namespace utility {
@@ -57,8 +61,10 @@ void norm_angle(double *angle);
 void norm_angle_rad(double *angle);
 double angle_difference(double angle1, double angle2);
 double angle_difference_rad(double angle1, double angle2);
+#ifndef WITHOUT_PACKETINTERFACE
 bool uploadRouteHelper(PacketInterface *packetInterface, int carId, QList<LocPoint> route);
 bool replaceRouteHelper(PacketInterface *packetInterface, int carId, QList<LocPoint> route);
+#endif
 int loadRoutes(QString filename, MapWidget *map);
 
 }

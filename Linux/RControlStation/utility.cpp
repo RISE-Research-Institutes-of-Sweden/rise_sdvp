@@ -401,6 +401,7 @@ double angle_difference_rad(double angle1, double angle2) {
     return difference;
 }
 
+#ifndef WITHOUT_PACKETINTERFACE
 bool uploadRouteHelper(PacketInterface *packetInterface, int carId, QList<LocPoint> route)
 {
     bool ok = true;
@@ -453,6 +454,7 @@ bool replaceRouteHelper(PacketInterface *packetInterface, int carId, QList<LocPo
 
     return ok;
 }
+#endif
 
 int loadRoutes(QString filename, MapWidget *map)
 {
