@@ -530,6 +530,15 @@ void MapWidget::clearAllInfoTraces()
     update();
 }
 
+void MapWidget::dropOldPointsInfoTrace(int keep)
+{
+    int length = mInfoTraces[mInfoTraceNow].size();
+    if (length > keep) {
+        mInfoTraces[mInfoTraceNow].mid(length - keep, -1);
+        update();
+    }
+}
+
 void MapWidget::addPerspectivePixmap(PerspectivePixmap map)
 {
     mPerspectivePixmaps.append(map);
@@ -1102,6 +1111,15 @@ void MapWidget::setDrawUwbTrace(bool drawUwbTrace)
 {
     mDrawUwbTrace = drawUwbTrace;
     update();
+}
+
+QList<LocPoint> MapWidget::getInfoTrace(int traceNum) const
+{
+    QList<LocPoint> ret;
+    if (mInfoTraces.size() > traceNum) {
+        ret = mInfoTraces.at(traceNum);
+    }
+    return ret;
 }
 
 double MapWidget::getTraceMinSpaceGps() const

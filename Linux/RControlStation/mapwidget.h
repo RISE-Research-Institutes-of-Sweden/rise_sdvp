@@ -97,6 +97,7 @@ public:
     void addInfoPoint(LocPoint &info, bool updateMap = true);
     void clearInfoTrace();
     void clearAllInfoTraces();
+    void dropOldPointsInfoTrace(int keep);
     void addPerspectivePixmap(PerspectivePixmap map);
     void clearPerspectivePixmaps();
     QPoint getMousePosRelative();
@@ -155,6 +156,8 @@ public:
 
     bool getDrawUwbTrace() const;
     void setDrawUwbTrace(bool drawUwbTrace);
+
+    QList<LocPoint> getInfoTrace(int traceNum) const;
 
     void setLastCameraImage(const QImage &lastCameraImage);
 
