@@ -58,6 +58,8 @@ static bool m_en_angle_dist_comp;
 static int m_route_look_ahead;
 static int m_route_left;
 static bool m_route_end;
+static int m_route_part_end; // Partial route with same direction
+static int m_route_total_end; // Complete route that may contain direction changes
 
 #if HAS_DIFF_STEERING
 static float m_turn_rad_now;
@@ -105,6 +107,7 @@ void autopilot_init(void) {
 	m_route_look_ahead = 8;
 	m_route_left = 0;
 	m_route_end = false;
+	m_route_part_end = -1;
 
 #if HAS_DIFF_STEERING
 	m_turn_rad_now = 1e6;
@@ -320,8 +323,16 @@ void autopilot_set_active(bool active) {
 	if (active && !m_is_active) {
 		m_start_time = pos_get_ms_today();
 //		m_sync_rx = false;
-	}
 
+		// Check whether there is a direction change in the route. If so, remember the first one
+		m_route_total_end = m_point_last-1;
+		int i;
+		for (i = 1; i <= m_route_total_end; i++)
+			if (m_route[0].speed * m_route[i].speed < 0)
+				break;
+		m_route_part_end = i - 1;
+		m_point_last = m_route_part_end+1;
+	}
 	m_is_active = active;
 
 	if (m_route_end && m_is_active) {
@@ -802,8 +813,8 @@ static THD_FUNCTION(ap_thread, arg) {
 					commands_plot_set_graph(3);
 					commands_send_plot_points((float)sample, m_rad_now * 10.0);
 
-					commands_printf("D: %.1f cm, S: %.2f km/h, Yaw: %.1f deg, Rad: %.2f m, closest1_ind: %d",
-							(double)diff, (double)speed, (double)pos_now.yaw, (double)m_rad_now, closest1_ind);
+					commands_printf("D: %.1f cm, S: %.2f km/h, Yaw: %.1f deg, Rad: %.2f m, closest1_ind: %d, look_ahead: %d",
+							(double)diff, (double)speed, (double)pos_now.yaw, (double)m_rad_now, closest1_ind, look_ahead);
 				}
 
 				sample++;
@@ -838,8 +849,8 @@ static THD_FUNCTION(ap_thread, arg) {
 				float steering_angle = 0.0;
 				float circle_radius = 1000.0;
 
-				steering_angle_to_point(pos_now.px, pos_now.py, -pos_now.yaw * M_PI / 180.0, rp_now.px,
-						rp_now.py, &steering_angle, &distance, &circle_radius);
+				steering_angle_to_point(pos_now.px, pos_now.py, -pos_now.yaw * M_PI / 180.0, m_rp_now.px,
+						m_rp_now.py, &steering_angle, &distance, &circle_radius);
 
 #if !HAS_DIFF_STEERING
 				// Scale maximum steering by speed
@@ -866,11 +877,11 @@ static THD_FUNCTION(ap_thread, arg) {
 						// and the points is used and not the arc that the car drives. This
 						// should still work well enough.
 
-						int32_t dist_prev = (int32_t)(utils_rp_distance(&rp_now, rp_ls1) * 1000.0);
-						int32_t dist_tot = (int32_t)(utils_rp_distance(&rp_now, rp_ls1) * 1000.0);
-						dist_tot += (int32_t)(utils_rp_distance(&rp_now, rp_ls2) * 1000.0);
+						int32_t dist_prev = (int32_t)(utils_rp_distance(&m_rp_now, rp_ls1) * 1000.0);
+						int32_t dist_tot = (int32_t)(utils_rp_distance(&m_rp_now, rp_ls1) * 1000.0);
+						dist_tot += (int32_t)(utils_rp_distance(&m_rp_now, rp_ls2) * 1000.0);
 						int32_t time = utils_map_int(dist_prev, 0, dist_tot, rp_ls1->time, rp_ls2->time);
-						float dist_car = utils_rp_distance(&car_pos, &rp_now);
+						float dist_car = utils_rp_distance(&car_pos, &m_rp_now);
 
 						int32_t t_diff = time - ms_today;
 
@@ -892,8 +903,8 @@ static THD_FUNCTION(ap_thread, arg) {
 					}
 				} else {
 					// Calculate the speed based on the average speed between the two closest points
-					const float dist_prev = utils_rp_distance(&rp_now, closest1_speed);
-					const float dist_tot = utils_rp_distance(&rp_now, closest1_speed) + utils_rp_distance(&rp_now, closest2_speed);
+					const float dist_prev = utils_rp_distance(&m_rp_now, closest1_speed);
+					const float dist_tot = utils_rp_distance(&m_rp_now, closest1_speed) + utils_rp_distance(&m_rp_now, closest2_speed);
 					speed = utils_map(dist_prev, 0.0, dist_tot, closest1_speed->speed, closest2_speed->speed);
 				}
 
@@ -917,9 +928,22 @@ static THD_FUNCTION(ap_thread, arg) {
 			if (!main_config.car.disable_motor) {
 				bldc_interface_set_current_brake(10.0);
 			}
-			m_rad_now = -1.0;
-			m_is_active = false;
-			reset_state();
+
+			if (m_route_part_end != -1 && m_route_part_end < m_route_total_end) { // Change of direction, advance to next part
+				int i;
+				for (i = m_route_part_end + 2; i <= m_route_total_end; i++)
+					if (m_route[m_route_part_end+1].speed * m_route[i].speed < 0)
+						break;
+				m_point_now = m_route_part_end + 1;
+				m_route_part_end = i - 1;
+				m_point_last = m_route_part_end+1;
+				m_route_end = false;
+				//commands_printf("m_route_part_end: %d, m_route_total_end: %d", m_route_part_end, m_route_total_end);
+			} else {
+				m_rad_now = -1.0;
+				m_is_active = false;
+				reset_state();
+			}
 		}
 
 		chMtxUnlock(&m_ap_lock);
@@ -1010,6 +1034,7 @@ static void clear_route(void) {
 	m_point_rx_prev_set = false;
 	m_start_time = pos_get_ms_today();
 	m_sync_rx = false;
+	m_route_part_end = -1;
 	memset(&m_rp_now, 0, sizeof(ROUTE_POINT));
 	memset(&m_point_rx_prev, 0, sizeof(ROUTE_POINT));
 }

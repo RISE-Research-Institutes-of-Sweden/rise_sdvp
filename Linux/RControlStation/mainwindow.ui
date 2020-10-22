@@ -1455,7 +1455,7 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>265</width>
+                     <width>309</width>
                      <height>1080</height>
                     </rect>
                    </property>
@@ -1763,6 +1763,9 @@
                          </property>
                          <property name="decimals">
                           <number>1</number>
+                         </property>
+                         <property name="minimum">
+                          <double>-120.000000000000000</double>
                          </property>
                          <property name="maximum">
                           <double>120.000000000000000</double>
@@ -2978,7 +2981,7 @@
                      <x>0</x>
                      <y>0</y>
                      <width>330</width>
-                     <height>864</height>
+                     <height>699</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
