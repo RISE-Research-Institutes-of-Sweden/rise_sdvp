@@ -604,6 +604,8 @@ static THD_FUNCTION(ap_thread, arg) {
 			int look_ahead = m_route_look_ahead;
 			if (look_ahead >= len) {
 				look_ahead = len-1;
+			} else if (!main_config.ap_repeat_routes && look_ahead >= m_route_left) {
+				look_ahead = (m_route_left > 2)? m_route_left - 1 : 2;
 			}
 
 			int start;
