@@ -48,6 +48,8 @@ BaseStation::BaseStation(QWidget *parent) :
             this, SLOT(rxRawx(ubx_rxm_rawx)));
     connect(mUblox, SIGNAL(rxNavSol(ubx_nav_sol)),
             this, SLOT(rxNavSol(ubx_nav_sol)));
+    connect(mUblox, SIGNAL(rxNavPvt(ubx_nav_pvt)),
+            this, SLOT(rxNavPvt(ubx_nav_pvt)));
     connect(mUblox, SIGNAL(rxNavSat(ubx_nav_sat)),
             this, SLOT(rxNavSat(ubx_nav_sat)));
     connect(mUblox, SIGNAL(rxSvin(ubx_nav_svin)),
@@ -347,6 +349,26 @@ void BaseStation::rxNavSol(ubx_nav_sol sol)
             mBasePosSet = true;
         }
     }
+}
+
+void BaseStation::rxNavPvt(ubx_nav_pvt pvt)
+{
+    double iLlh[3];
+    mMap->getEnuRef(iLlh);
+
+    const double llh[3] = {pvt.lat, pvt.lon, pvt.height};
+
+    double xyz[3];
+    utility::llhToEnu(iLlh, llh, xyz);
+
+//    qDebug() << xyz[0] << xyz[1] << xyz[2];
+
+    const auto& carInfo =  mMap->getCarInfo(0);
+    if (carInfo == nullptr)
+        return;
+    const auto& pos = carInfo->getLocation();
+
+    qDebug() << sqrt(pow(xyz[0] - pos.getX(), 2) + pow(xyz[1] - pos.getY(), 2) + pow(xyz[2] - pos.getHeight(), 2));
 }
 
 void BaseStation::rxNavSat(ubx_nav_sat sat)

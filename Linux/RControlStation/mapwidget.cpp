@@ -280,7 +280,7 @@ CarInfo *MapWidget::getCarInfo(int car)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 CopterInfo *MapWidget::getCopterInfo(int copter)
@@ -291,7 +291,7 @@ CopterInfo *MapWidget::getCopterInfo(int copter)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void MapWidget::addCar(const CarInfo &car)

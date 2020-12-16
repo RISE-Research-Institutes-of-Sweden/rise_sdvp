@@ -50,6 +50,7 @@ private slots:
     void timerSlot();
     void rxRawx(ubx_rxm_rawx rawx);
     void rxNavSol(ubx_nav_sol sol);
+    void rxNavPvt(ubx_nav_pvt pvt);
     void rxNavSat(ubx_nav_sat sat);
     void rxSvin(ubx_nav_svin svin);
     void rtcmRx(QByteArray data, int type);

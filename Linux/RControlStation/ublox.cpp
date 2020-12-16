@@ -1125,9 +1125,9 @@ void Ublox::ubx_decode_nav_pvt(uint8_t *msg, int len)
     pvt.lon = ((double)ubx_get_I4(msg, &ind))*1.0e-7; // 24
     pvt.lat = ((double)ubx_get_I4(msg, &ind))*1.0e-7; // 28
     pvt.height = ((double)ubx_get_I4(msg, &ind))*1.0e-3; // 32
-
     // TODO: ...
-    qDebug() << pvt.lon << pvt.lat << pvt.height;
+
+    emit rxNavPvt(pvt);
 }
 
 void Ublox::ubx_decode_relposned(uint8_t *msg, int len)

@@ -64,6 +64,7 @@ public:
 signals:
     void rxGga(int fields, NmeaServer::nmea_gga_info_t gga);
     void rxNavSol(ubx_nav_sol sol);
+    void rxNavPvt(ubx_nav_pvt pvt);
     void rxRelPosNed(ubx_nav_relposned pos);
     void rxSvin(ubx_nav_svin svin);
     void rxAck(uint8_t cls_id, uint8_t msg_id);
