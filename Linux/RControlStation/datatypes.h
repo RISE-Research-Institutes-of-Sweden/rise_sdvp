@@ -573,6 +573,41 @@ typedef struct {
 } ubx_nav_sol;
 
 typedef struct {
+    uint32_t i_tow;
+    uint16_t year;
+    uint8_t month;
+    uint8_t day;
+    uint8_t hour;
+    uint8_t min;
+    uint8_t second;
+
+    bool valid_date;
+    bool valid_time;
+    bool fully_resolved;
+    bool valid_mag;
+
+    uint32_t tAcc;
+    int32_t nano;
+
+    uint8_t fixType;
+    bool gnssfixok;
+    bool diffsoln;
+    uint8_t psmstate;
+    bool headVehValid;
+    uint8_t carrsoln;
+
+    bool confirmed_avai;
+    bool confirmed_date;
+    bool confirmed_time;
+
+    uint8_t num_sv;
+    double lon;
+    double lat;
+    double height;
+    // TODO: ...
+} ubx_nav_pvt;
+
+typedef struct {
     uint8_t gnss_id; // 0: GPS, 1: SBAS, 2: GAL, 3: BDS, 5: QZSS, 6: GLO
     uint8_t sv_id;
     uint8_t cno; // Carrier to noise ratio (signal strength)

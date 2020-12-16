@@ -105,6 +105,7 @@ private:
 
     void ubx_decode(uint8_t msg_class, uint8_t id, uint8_t *msg, int len);
     void ubx_decode_nav_sol(uint8_t *msg, int len);
+    void ubx_decode_nav_pvt(uint8_t *msg, int len);
     void ubx_decode_relposned(uint8_t *msg, int len);
     void ubx_decode_svin(uint8_t *msg, int len);
     void ubx_decode_ack(uint8_t *msg, int len);
@@ -135,6 +136,7 @@ private:
 
 // Navigation (NAV) messages
 #define UBX_NAV_SOL						0x06
+#define UBX_NAV_PVT     				0x07
 #define UBX_NAV_RELPOSNED				0x3C
 #define UBX_NAV_SVIN					0x3B
 #define UBX_NAV_SAT 					0x35

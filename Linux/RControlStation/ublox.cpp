@@ -995,6 +995,9 @@ void Ublox::ubx_decode(uint8_t msg_class, uint8_t id, uint8_t *msg, int len)
         case UBX_NAV_SOL: // TODO: dropped on F9P, implement UBX-NAV-PVT or UBX-NAV-HPPOSLLH (see: https://cdn.sparkfun.com/assets/learn_tutorials/8/5/6/ZED-F9P_FW_1.00_HPG_1.00_release_notes.pdf)
             ubx_decode_nav_sol(msg, len);
             break;
+        case UBX_NAV_PVT:
+            ubx_decode_nav_pvt(msg, len);
+            break;
         case UBX_NAV_SAT:
             ubx_decode_nav_sat(msg, len);
             break;
@@ -1083,6 +1086,48 @@ void Ublox::ubx_decode_nav_sol(uint8_t *msg, int len)
     sol.num_sv = ubx_get_U1(msg, &ind); // 47
 
     emit rxNavSol(sol);
+}
+
+void Ublox::ubx_decode_nav_pvt(uint8_t *msg, int len)
+{
+    (void)len;
+
+    static ubx_nav_pvt pvt;
+    int ind = 0;
+    uint8_t flags;
+
+    pvt.i_tow = ubx_get_U4(msg, &ind); // 0
+    pvt.year = ubx_get_U2(msg, &ind); // 4
+    pvt.month = ubx_get_U1(msg, &ind); // 6
+    pvt.day = ubx_get_U1(msg, &ind); // 7
+    pvt.hour = ubx_get_U1(msg, &ind); // 8
+    pvt.min = ubx_get_U1(msg, &ind); // 9
+    pvt.second = ubx_get_U1(msg, &ind); // 10
+    flags = ubx_get_X1(msg, &ind); // 11
+    pvt.valid_date = flags & 0x01;
+    pvt.valid_time = flags & 0x02;
+    pvt.fully_resolved = flags & 0x04;
+    pvt.valid_mag = flags & 0x08;
+    pvt.tAcc = ubx_get_U4(msg, &ind); // 12
+    pvt.nano = ubx_get_I4(msg, &ind); // 16
+    pvt.fixType = ubx_get_U1(msg, &ind); // 20
+    flags = ubx_get_X1(msg, &ind); // 21
+    pvt.gnssfixok = flags    & 0b00000001;
+    pvt.diffsoln = flags     & 0b00000010;
+    pvt.psmstate = flags     & 0b00011100;
+    pvt.headVehValid = flags & 0b00100000;
+    pvt.carrsoln = flags     & 0b11000000;
+    flags = ubx_get_X1(msg, &ind); // 22
+    pvt.confirmed_avai = flags & 0b00100000;
+    pvt.confirmed_date = flags & 0b01000000;
+    pvt.confirmed_time = flags & 0b10000000;
+    pvt.num_sv = ubx_get_U1(msg, &ind); // 23
+    pvt.lon = ((double)ubx_get_I4(msg, &ind))*1.0e-7; // 24
+    pvt.lat = ((double)ubx_get_I4(msg, &ind))*1.0e-7; // 28
+    pvt.height = ((double)ubx_get_I4(msg, &ind))*1.0e-3; // 32
+
+    // TODO: ...
+    qDebug() << pvt.lon << pvt.lat << pvt.height;
 }
 
 void Ublox::ubx_decode_relposned(uint8_t *msg, int len)

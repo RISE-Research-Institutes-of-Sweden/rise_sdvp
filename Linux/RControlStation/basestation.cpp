@@ -565,6 +565,7 @@ void BaseStation::configureUbx(Ublox* ublox, unsigned int baudrate, int rate_mea
 }
 
     ublox->ubxCfgMsg(UBX_CLASS_NAV, UBX_NAV_SAT, 1);
+    ublox->ubxCfgMsg(UBX_CLASS_NAV, UBX_NAV_PVT, 1);
 
     if (isF9p) {
         unsigned char buffer[512];
