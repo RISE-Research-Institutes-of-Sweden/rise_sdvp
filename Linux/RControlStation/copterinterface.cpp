@@ -161,6 +161,7 @@ void CopterInterface::setStateData(MULTIROTOR_STATE data)
         loc.setYaw(data.yaw * M_PI / 180.0);
         loc.setXY(data.px, data.py);
         loc_gps.setXY(data.px_gps, data.py_gps);
+        loc_gps.setHeight(data.pz);
         ap_goal.setXY(data.ap_goal_px, data.ap_goal_py);
         copter->setLocation(loc);
         copter->setLocationGps(loc_gps);

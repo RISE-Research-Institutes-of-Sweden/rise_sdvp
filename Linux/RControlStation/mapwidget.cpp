@@ -2279,7 +2279,7 @@ void MapWidget::paint(QPainter &painter, int width, int height, bool highQuality
         painter.setTransform(txtTrans);
         pt_txt = drawTrans.map(pt_txt);
         rect_txt.setCoords(pt_txt.x(), pt_txt.y() - 20,
-                           pt_txt.x() + 300, pt_txt.y() + 25);
+                           pt_txt.x() + 500, pt_txt.y() + 100);
         painter.setPen(QPen(textColor));
         painter.drawText(rect_txt, txt);
 

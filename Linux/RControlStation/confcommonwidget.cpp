@@ -131,8 +131,8 @@ void ConfCommonWidget::setConfGui(const MAIN_CONFIG &conf)
     ui->confUwbMaxCorrBox->setValue(conf.uwb_max_corr);
 
     ui->confApRepeatBox->setChecked(conf.ap_repeat_routes);
-    CarInterface * car = dynamic_cast<CarInterface *>(parentWidget()->parentWidget()->parentWidget()->parentWidget());
-    ui->confApResetOnEmergencyStopBox->setChecked(car->getResetApOnEmergencyStop());
+//    CarInterface * car = dynamic_cast<CarInterface *>(parentWidget()->parentWidget()->parentWidget()->parentWidget());
+//    ui->confApResetOnEmergencyStopBox->setChecked(car->getResetApOnEmergencyStop());
     ui->confApBaseRadBox->setValue(conf.ap_base_rad);
     ui->confApRadTimeBox->setValue(conf.ap_rad_time_ahead);
     ui->confApMaxSpeedBox->setValue(conf.ap_max_speed * 3.6);

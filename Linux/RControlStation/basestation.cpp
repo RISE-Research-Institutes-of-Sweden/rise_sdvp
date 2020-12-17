@@ -353,20 +353,28 @@ void BaseStation::rxNavSol(ubx_nav_sol sol)
 
 void BaseStation::rxNavPvt(ubx_nav_pvt pvt)
 {
+    static bool first = true;
+
+    const double llh[3] = {pvt.lat, pvt.lon, pvt.height};
+
+    if (first) {
+        first = false;
+        mMap->setEnuRef(pvt.lat, pvt.lon, pvt.height);
+    }
+
     double iLlh[3];
     mMap->getEnuRef(iLlh);
 
-    const double llh[3] = {pvt.lat, pvt.lon, pvt.height};
 
     double xyz[3];
     utility::llhToEnu(iLlh, llh, xyz);
 
 //    qDebug() << xyz[0] << xyz[1] << xyz[2];
 
-    const auto& carInfo =  mMap->getCarInfo(0);
-    if (carInfo == nullptr)
+    const auto& copterInfo =  mMap->getCopterInfo(0);
+    if (copterInfo == nullptr)
         return;
-    const auto& pos = carInfo->getLocation();
+    const auto& pos = copterInfo->getLocationGps();
 
     qDebug() << sqrt(pow(xyz[0] - pos.getX(), 2) + pow(xyz[1] - pos.getY(), 2) + pow(xyz[2] - pos.getHeight(), 2));
 }
