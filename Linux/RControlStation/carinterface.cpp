@@ -1142,3 +1142,13 @@ void CarInterface::setResetApOnEmergencyStop(bool value)
 {
     resetApOnEmergencyStop = value;
 }
+
+void CarInterface::on_corrGNSSinfo0Button_clicked()
+{
+    emit terminalCmd(mId, "pos_gnss_corr_info 0");
+}
+
+void CarInterface::on_corrGNSSinfo1Button_clicked()
+{
+    emit terminalCmd(mId, "pos_gnss_corr_info 1");
+}

@@ -43,8 +43,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>241</width>
-           <height>84</height>
+           <width>180</width>
+           <height>68</height>
           </rect>
          </property>
          <attribute name="label">
@@ -104,8 +104,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>244</width>
-           <height>138</height>
+           <width>180</width>
+           <height>80</height>
           </rect>
          </property>
          <attribute name="label">
@@ -210,8 +210,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>241</width>
-           <height>83</height>
+           <width>181</width>
+           <height>71</height>
           </rect>
          </property>
          <attribute name="label">
@@ -810,7 +810,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="icon">
@@ -1455,8 +1455,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>265</width>
-                     <height>1080</height>
+                     <width>186</width>
+                     <height>691</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_23">
@@ -2070,8 +2070,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>246</width>
-                     <height>613</height>
+                     <width>151</width>
+                     <height>397</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -2365,8 +2365,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>270</width>
-                     <height>1130</height>
+                     <width>184</width>
+                     <height>710</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -2977,8 +2977,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>330</width>
-                     <height>864</height>
+                     <width>332</width>
+                     <height>484</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -3499,7 +3499,7 @@
      <x>0</x>
      <y>0</y>
      <width>1561</width>
-     <height>40</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuHelp">

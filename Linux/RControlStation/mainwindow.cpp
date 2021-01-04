@@ -978,6 +978,10 @@ void MainWindow::on_serialConnectButton_clicked()
     mSerialPort->setStopBits(QSerialPort::OneStop);
     mSerialPort->setFlowControl(QSerialPort::NoFlowControl);
 
+    // NOTE DAC HACK
+    if (mCars.size() == 0)
+        addCar(0);
+
     mPacketInterface->stopUdpConnection();
 
     mTcpClientMulti->disconnectAll();

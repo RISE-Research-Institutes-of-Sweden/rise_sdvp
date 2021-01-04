@@ -130,6 +130,10 @@ private slots:
     void on_uwbListAnchorsButton_clicked();
     void on_ioBoardPwmSlider_valueChanged(int value);
 
+    void on_corrGNSSinfo0Button_clicked();
+
+    void on_corrGNSSinfo1Button_clicked();
+
 private:
     typedef struct {
         QString label;
