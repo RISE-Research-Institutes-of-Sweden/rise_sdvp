@@ -136,7 +136,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(serialDataAvailable()));
     connect(mSerialPort, SIGNAL(error(QSerialPort::SerialPortError)),
             this, SLOT(serialPortError(QSerialPort::SerialPortError)));
-    connect(mTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
     connect(mHeartbeatTimer, SIGNAL(timeout()), this, SLOT(sendHeartbeat()));
     connect(mPacketInterface, SIGNAL(dataToSend(QByteArray&)),
             this, SLOT(packetDataToSend(QByteArray&)));
@@ -529,7 +528,8 @@ void MainWindow::timerSlot()
 
     for(QList<CarInterface*>::Iterator it_car = mCars.begin();it_car < mCars.end();it_car++) {
         CarInterface *car = *it_car;
-        if (car->pollData() && ind >= next_car && !polled) {
+        if ((mSerialPort->isOpen() || mPacketInterface->isUdpConnected() || mTcpClientMulti->isAnyConnected()) &&
+                car->pollData() && ind >= next_car && !polled) {
             mPacketInterface->getState(car->getId());
             next_car = ind + 1;
             polled = true;
@@ -544,7 +544,8 @@ void MainWindow::timerSlot()
 
     for(QList<CopterInterface*>::Iterator it_copter = mCopters.begin();it_copter < mCopters.end();it_copter++) {
         CopterInterface *copter = *it_copter;
-        if (copter->pollData() && ind >= next_car && !polled) {
+        if ((mSerialPort->isOpen() || mPacketInterface->isUdpConnected() || mTcpClientMulti->isAnyConnected()) &&
+                copter->pollData() && ind >= next_car && !polled) {
             mPacketInterface->getMrState(copter->getId());
             next_car = ind + 1;
             polled = true;
