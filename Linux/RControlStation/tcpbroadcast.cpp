@@ -94,7 +94,15 @@ void TcpBroadcast::logStop()
 
 void TcpBroadcast::newTcpConnection()
 {
-    mSockets.append(mTcpServer->nextPendingConnection());
+    QTcpSocket *socket = mTcpServer->nextPendingConnection();
+    mSockets.append(socket);
+
+    // In case the client tries to authenticate via HTTP Basic, simply tell it was successful (for NTRIP)
+    connect(socket, &QTcpSocket::readyRead, this, [socket]() {
+        QByteArray data = socket->readAll();
+        if (data.contains("Authorization: Basic"))
+            socket->write("ICY 200 OK\r\n");
+    });
     qDebug() << "TCP connection accepted:" << mSockets[mSockets.size() - 1]->peerAddress();
 }
 
