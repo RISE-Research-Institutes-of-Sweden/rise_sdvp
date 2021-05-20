@@ -26,7 +26,7 @@ unix:!macx {
 
 # OpenGL support
 !android: DEFINES += HAS_OPENGL
-win32: LIBS += -lOpengl32
+win32: LIBS += -lopengl32
 
 # Lime SDR support
 #DEFINES += HAS_LIME_SDR
