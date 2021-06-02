@@ -34,6 +34,7 @@
 #include "routemagic.h"
 #include "wireguard.h"
 #include "attributes_masks.h"
+#include "datatypes.h"
 
 namespace {
 void stepTowards(double &value, double goal, double step) {
@@ -683,7 +684,7 @@ void MainWindow::ackReceived(quint8 id, CMD_PACKET cmd, QString msg)
 
 void MainWindow::rtcmReceived(QByteArray data)
 {
-    mPacketInterface->sendRtcmUsb(255, data);
+    mPacketInterface->sendRtcmUsb(ID_ALL, data);
 
     if (ui->mapEnuBaseBox->isChecked()) {
         rtcm3_init_state(&mRtcmState);
@@ -2287,6 +2288,12 @@ void MainWindow::on_AutopilotStartPushButton_clicked()
     QWidget *tmp = ui->carsWidget->widget(ui->mapCarBox->value());
     if (tmp) {
         CarInterface *car = dynamic_cast<CarInterface*>(tmp);
+        if (ui->radioButton_followRoute->isChecked())
+            car->setApMode(AP_MODE_FOLLOW_ROUTE);
+
+        else if (ui->radioButton_followMe->isChecked())
+            car->setApMode(AP_MODE_FOLLOW_ME);
+
         car->setAp(true, false);
     }
 }
