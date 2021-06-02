@@ -59,6 +59,7 @@ public:
     void setCtrlKb();
     bool getCtrlKb();
     bool setAp(bool on, bool resetState = false);
+    void setApMode(AP_MODE mode = AP_MODE_FOLLOW_ROUTE);
     void disableKbBox();
     void toggleCameraFullscreen();
     void showAutoPilotConfiguration();

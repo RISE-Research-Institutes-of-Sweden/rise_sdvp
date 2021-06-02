@@ -43,8 +43,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>241</width>
-           <height>84</height>
+           <width>180</width>
+           <height>68</height>
           </rect>
          </property>
          <attribute name="label">
@@ -104,8 +104,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>244</width>
-           <height>138</height>
+           <width>180</width>
+           <height>88</height>
           </rect>
          </property>
          <attribute name="label">
@@ -210,8 +210,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>241</width>
-           <height>83</height>
+           <width>181</width>
+           <height>71</height>
           </rect>
          </property>
          <attribute name="label">
@@ -1204,6 +1204,9 @@
                    <string>Autopilot</string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_33">
+                   <property name="rightMargin">
+                    <number>9</number>
+                   </property>
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_20">
                      <item>
@@ -1278,6 +1281,32 @@
                      </property>
                     </widget>
                    </item>
+                   <item>
+                    <widget class="QGroupBox" name="ap_modes">
+                     <property name="title">
+                      <string/>
+                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_19">
+                      <item>
+                       <widget class="QRadioButton" name="radioButton_followRoute">
+                        <property name="text">
+                         <string>Follow route</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QRadioButton" name="radioButton_followMe">
+                        <property name="text">
+                         <string>Follow Me</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
                   </layout>
                  </widget>
                 </item>
@@ -1302,7 +1331,7 @@
                    <property name="spacing">
                     <number>2</number>
                    </property>
-                   <item row="1" column="0">
+                   <item row="3" column="0">
                     <widget class="QPushButton" name="mapGetEnuButton">
                      <property name="toolTip">
                       <string>Get enu reference point from car and use it</string>
@@ -1316,7 +1345,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="1">
+                   <item row="3" column="1">
                     <widget class="QPushButton" name="mapSetEnuButton">
                      <property name="toolTip">
                       <string>Set current ENU reference point</string>
@@ -1330,7 +1359,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="0" colspan="2">
+                   <item row="2" column="0" colspan="2">
                     <widget class="QCheckBox" name="mapEnuBaseBox">
                      <property name="toolTip">
                       <string>Use base station position from RTCM as ENU reference</string>
@@ -1455,8 +1484,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>265</width>
-                     <height>1080</height>
+                     <width>332</width>
+                     <height>974</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_23">
@@ -2070,8 +2099,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>246</width>
-                     <height>613</height>
+                     <width>196</width>
+                     <height>436</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -2365,8 +2394,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>270</width>
-                     <height>1130</height>
+                     <width>210</width>
+                     <height>783</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -2977,8 +3006,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>330</width>
-                     <height>864</height>
+                     <width>332</width>
+                     <height>532</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -3499,7 +3528,7 @@
      <x>0</x>
      <y>0</y>
      <width>1561</width>
-     <height>40</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuHelp">

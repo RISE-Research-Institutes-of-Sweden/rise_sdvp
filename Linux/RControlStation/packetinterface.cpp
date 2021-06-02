@@ -547,7 +547,8 @@ void PacketInterface::processPacket(const unsigned char *data, int len)
     case CMD_CLEAR_UWB_ANCHORS:
         emit ackReceived(id, cmd, "CMD_CLEAR_UWB_ANCHORS");
         break;
-
+    case CMD_HEARTBEAT:
+    // ToDo: Set action if heartbeat is missing for more than 1 sec
     default:
         break;
     }
@@ -1386,5 +1387,14 @@ void PacketInterface::sendCameraFrameAck(quint8 id)
     packet.clear();
     packet.append(id);
     packet.append((char)CMD_CAMERA_FRAME_ACK);
+    sendPacket(packet);
+}
+
+void PacketInterface::setApMode(quint8 id, AP_MODE mode)
+{
+    QByteArray packet;
+    packet.append(id);
+    packet.append(CMD_SET_AP_MODE);
+    packet.append(mode);
     sendPacket(packet);
 }

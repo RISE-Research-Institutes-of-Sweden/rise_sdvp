@@ -362,6 +362,12 @@ bool CarInterface::setAp(bool on, bool resetState)
     return ok;
 }
 
+void CarInterface::setApMode(AP_MODE mode)
+{
+    if (mPacketInterface)
+        mPacketInterface->setApMode(mId, mode);
+}
+
 void CarInterface::disableKbBox()
 {
     ui->keyboardControlBox->setChecked(false);
