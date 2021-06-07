@@ -170,7 +170,7 @@ void PacketInterface::processData(QByteArray &data)
                 if (crc16(mRxBuffer, mPayloadLength) ==
                         ((unsigned short)mCrcHigh << 8 | (unsigned short)mCrcLow)) {
                     // Packet received!
-                    processPacket(mRxBuffer, mPayloadLength);
+                    emit packetReceived((quint8)data[0], (CMD_PACKET)(quint8)data[1], QByteArray((const char*)mRxBuffer, mPayloadLength));
                 }
             }
 
@@ -186,8 +186,6 @@ void PacketInterface::processData(QByteArray &data)
 
 void PacketInterface::processPacket(const unsigned char *data, int len)
 {
-    QByteArray pkt = QByteArray((const char*)data, len);
-
     unsigned char id = data[0];
     data++;
     len--;
@@ -195,8 +193,6 @@ void PacketInterface::processPacket(const unsigned char *data, int len)
     CMD_PACKET cmd = (CMD_PACKET)(quint8)data[0];
     data++;
     len--;
-
-    emit packetReceived(id, cmd, pkt);
 
     switch (cmd) {
     case CMD_PRINTF: {
