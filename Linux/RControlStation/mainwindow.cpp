@@ -2313,6 +2313,12 @@ void MainWindow::on_AutopilotRestartPushButton_clicked()
     QWidget *tmp = ui->carsWidget->widget(ui->mapCarBox->value());
     if (tmp) {
         CarInterface *car = dynamic_cast<CarInterface*>(tmp);
+        if (ui->radioButton_followRoute->isChecked())
+            car->setApMode(AP_MODE_FOLLOW_ROUTE);
+
+        else if (ui->radioButton_followMe->isChecked())
+            car->setApMode(AP_MODE_FOLLOW_ME);
+
         car->setAp(true, true);
     }
 }
